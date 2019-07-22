@@ -1,0 +1,26 @@
+test_kind: cpp_integration_test
+
+selector:
+  root: build/integration_tests.txt
+  exclude_files:
+  - build/integration_tests/client_dbclient_connection_integration_test* # Needs sleep command
+
+executor:
+  archive:
+    hooks:
+      - CheckReplDBHash
+      - ValidateCollections
+  config: {}
+  hooks:
+  - class: CheckReplDBHash
+  - class: ValidateCollections
+  fixture:
+    class: ShardedClusterFixture
+    mongod_options:
+      set_parameters:
+        enableTestCommands: 1
+    mongos_options:
+      set_parameters:
+        enableTestCommands: 1
+    enable_sharding:
+    - test
