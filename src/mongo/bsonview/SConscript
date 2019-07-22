@@ -1,0 +1,9 @@
+# -*- mode: python; -*-
+
+Import([
+    'env',
+    'get_option'
+])
+
+env = env.Clone()
+

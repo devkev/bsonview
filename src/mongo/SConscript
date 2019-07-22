@@ -23,6 +23,7 @@ env.SConscript(
     dirs=[
         'base',
         'bson',
+        'bsonview',
         'client',
         'crypto',
         'db',
@@ -650,6 +651,34 @@ if not has_option('noshell') and usemozjs:
 else:
     shellEnv = None
 
+# --- bsonview ---
+
+if not has_option('nobsonview'):
+    bvEnv = env.Clone()
+    if env.TargetOSIs('windows'):
+        env.FatalError("bsonview not supported on Windows, either build on another platform or add `--nobsonview`.")
+
+    bsonview = bvEnv.Program(
+        "bv",
+        [
+            "bsonview/main.cpp",
+        ],
+        LIBDEPS=[
+            'base',
+            'db/matcher/expressions',
+        ],
+        LIBDEPS_PRIVATE=[
+        ],
+        SYSLIBDEPS=["tickit"],
+        AIB_COMPONENT="tools",
+        AIB_ROLE="runtime",
+    )
+
+    if not hygienic:
+        bvEnv.Install( '#/', bsonview )
+else:
+    bvEnv = None
+
 #  ----  INSTALL -------
 
 # binaries
@@ -769,6 +798,11 @@ if shellEnv is not None:
     installBinary( shellEnv, "mongo" )
     if not hygienic:
         env.Alias( "core", [ '#/%s' % b for b in [ add_exe( "mongo" ) ] ] )
+
+if bvEnv is not None:
+    installBinary( bvEnv, "bv" )
+    if not hygienic:
+        env.Alias( "core", [ '#/%s' % b for b in [ add_exe( "bv" ) ] ] )
 
 if not hygienic:
     env.Alias( "core", [ '#/%s' % b for b in [ add_exe( "mongod" ), add_exe( "mongos" ) ] ] )

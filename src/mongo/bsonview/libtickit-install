@@ -1,0 +1,28 @@
+
+# works on ubuntu 18.04 and 16.04
+
+# maybe more than this, but this is what i was missing
+sudo apt-get install libtool-bin libncurses5-dev ncurses-doc
+
+git clone https://github.com/devkev/syzzle
+. syzzle/syzzle
+
+wget http://www.leonerd.org.uk/code/libtermkey/libtermkey-0.22.tar.gz
+tar xf libtermkey-0.22.tar.gz
+cd libtermkey-0.22
+mkdir -p $HOME/sw/libtermkey/0.22
+make PREFIX=$HOME/sw/libtermkey/0.22
+make PREFIX=$HOME/sw/libtermkey/0.22 install
+
+syz load libtermkey/0.22
+
+cd -
+wget http://www.leonerd.org.uk/code/libtickit/libtickit-0.3.2.tar.gz
+tar xf libtickit-0.3.2.tar.gz
+cd libtickit-0.3.2
+mkdir -p $HOME/sw/libtickit/0.3.2
+make PREFIX=$HOME/sw/libtickit/0.3.2
+make PREFIX=$HOME/sw/libtickit/0.3.2 install
+
+syz load libtickit/0.3.2
+

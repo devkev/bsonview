@@ -234,6 +234,11 @@ add_option('safeshell',
     nargs=0,
 )
 
+add_option('nobsonview',
+    help="don't build bsonview",
+    nargs=0,
+)
+
 add_option('dbg',
     choices=['on', 'off'],
     const='on',
@@ -3322,6 +3327,16 @@ def doConfigure(myenv):
         if not conf.CheckCXXHeader( "sqlite3.h" ):
             myenv.ConfError("Cannot find sqlite headers")
         conf.FindSysLibDep("sqlite", ["sqlite3"])
+
+    # scons is so annoying sometimes
+    #if not has_option('nobsonview') and not env.TargetOSIs('windows'):
+    #    conf.FindSysLibDep("tickit", ["tickit"])
+    #    if not conf.CheckLibWithHeader(
+    #            "tickit",
+    #            ["tickit.h"], "C",
+    #            "tickit_new_stdio();", autoadd=False):
+    #        env.ConfError("Could not find <tickit.h> and tickit library, required for bsonview.")
+    #    #conf.env['MONGO_TICKIT_LIB'] = ["tickit"]
 
     conf.env.Append(
         CPPDEFINES=[
