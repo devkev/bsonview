@@ -1,0 +1,14 @@
+
+Compiled on Ubuntu 16.04, should run on later Ubuntu releases also.
+
+Add the "lib" subdir to your $LD_LIBRARY_PATH, then "bv" should run fine.
+
+eg:
+
+tar xvf bsonview-0.0.1b.tar.xz
+cd bsonview-0.0.1b
+export LD_LIBRARY_PATH="$PWD/lib:$LD_LIBRARY_PATH"
+./bv huge.bson
+
+Source is available at https://github.com/devkev/bsonview
+

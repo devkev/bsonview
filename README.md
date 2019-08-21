@@ -55,9 +55,10 @@ Known Issues
 
 * `tcmalloc` and `libtickit` don't get along, so `bv` has to be built with the system allocator.  Since bsonview is (currently) single threaded, this is minor.
 * Using `$ne`, `$in`, `$nin`, and other similar MQL query predicate operators currently causes `bv` to segfault.
+* The initial commit is missing a reference to the upstream MongoDB commit that this was branched from: [e6644474d876eb99579101e81d38c363feef07cd](https://github.com/mongodb/mongo/tree/e6644474d876eb99579101e81d38c363feef07cd).
 
 
 Contact
 -------
 
-Kevin Pulo, kev@mongodb.com, kev@pulo.com.au
+Kevin Pulo, kev@pulo.com.au
