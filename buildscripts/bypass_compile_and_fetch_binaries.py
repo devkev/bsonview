@@ -397,7 +397,26 @@ def main():  # pylint: disable=too-many-locals,too-many-statements
                     ]
                     print("Extracting the following files from {0}...\n{1}".format(
                         filename, "\n".join(tarinfo.name for tarinfo in subdir)))
-                    tar.extractall(members=subdir)
+                    def is_within_directory(directory, target):
+                        
+                        abs_directory = os.path.abspath(directory)
+                        abs_target = os.path.abspath(target)
+                    
+                        prefix = os.path.commonprefix([abs_directory, abs_target])
+                        
+                        return prefix == abs_directory
+                    
+                    def safe_extract(tar, path=".", members=None, *, numeric_owner=False):
+                    
+                        for member in tar.getmembers():
+                            member_path = os.path.join(path, member.name)
+                            if not is_within_directory(path, member_path):
+                                raise Exception("Attempted Path Traversal in Tar File")
+                    
+                        tar.extractall(path, members, numeric_owner=numeric_owner) 
+                        
+                    
+                    safe_extract(tar, members=subdir)
             elif filename.startswith("mongo-src"):
                 print("Retrieving mongo source {}".format(filename))
                 # This is the distsrc.[tgz|zip] as referenced in evergreen.yml.
